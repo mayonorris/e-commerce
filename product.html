@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Démo | Produit</title>
+
+  <meta name="description" content="Fiche produit (démo) pour pratiquer GA4/GTM : view_item, add_to_cart." />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+
+  <script defer src="assets/js/analytics.js"></script>
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/product-page.js"></script>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <p class="topbar__text">Fiche produit (démo) — événements GA4 : <code>view_item</code>, <code>add_to_cart</code></p>
+      <div class="topbar__links">
+        <a href="shop.html" class="topbar__link" data-analytics="product_back_shop">Retour boutique</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="brand" aria-label="Aller à l'accueil">
+        <span class="brand__logo">EC</span>
+        <span class="brand__name">Boutique Démo</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav__link" href="index.html">Accueil</a>
+        <a class="nav__link" href="shop.html">Boutique</a>
+        <a class="nav__link" href="cart.html">Panier</a>
+      </nav>
+
+      <div class="header__actions">
+        <a class="btn btn--ghost" href="cart.html" aria-label="Ouvrir le panier" data-analytics="open_cart">
+          Panier <span class="badge" id="cartCount" aria-label="Articles dans le panier">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a>
+        <span aria-hidden="true">›</span>
+        <a href="shop.html">Boutique</a>
+        <span aria-hidden="true">›</span>
+        <span id="breadcrumbCurrent">Produit</span>
+      </nav>
+
+      <!-- Product layout -->
+      <section class="product" aria-label="Détails du produit">
+        <div class="product__media" aria-hidden="true">
+          <div class="product__img" id="productImg"></div>
+        </div>
+
+        <div class="product__content">
+          <div class="product__top">
+            <p class="product__category" id="productCategory">—</p>
+            <span class="tag" id="productBadge" hidden></span>
+          </div>
+
+          <h1 class="product__title" id="productTitle">Chargement…</h1>
+          <p class="product__desc" id="productDesc"></p>
+
+          <div class="product__meta">
+            <p class="product__price" id="productPrice">—</p>
+            <p class="product__sub" id="productSub">—</p>
+          </div>
+
+          <div class="product__actions">
+            <div class="qty">
+              <label class="control__label" for="qtyInput">Quantité</label>
+              <input id="qtyInput" class="control__input" type="number" min="1" step="1" value="1" inputmode="numeric" />
+            </div>
+
+            <button class="btn btn--primary" id="addToCartBtn" type="button" data-analytics="product_add_to_cart">
+              Ajouter au panier
+            </button>
+
+            <a class="btn btn--secondary" href="cart.html" data-analytics="product_view_cart">
+              Voir le panier
+            </a>
+          </div>
+
+          <div class="product__notes">
+            <p class="muted">
+              Astuce cours : comparez <code>view_item</code> → <code>add_to_cart</code> pour mesurer le taux d’ajout au panier.
+            </p>
+          </div>
+
+          <div class="product__alert" id="productAlert" hidden></div>
+        </div>
+      </section>
+
+      <!-- Related -->
+      <section class="section" style="padding-top: 2rem;">
+        <div class="section__head">
+          <h2 class="section__title">Produits similaires (démo)</h2>
+          <p class="section__subtitle">On affichera bientôt une vraie sélection basée sur la catégorie.</p>
+        </div>
+
+        <div class="grid products__grid" id="relatedGrid" aria-label="Produits similaires">
+          <!-- Injecté par JS (optionnel) -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__brand">Boutique Démo</p>
+      <p class="footer__text">Projet pour <strong>Statistique & Web Analytics</strong> (GA4 / GTM).</p>
+
+      <nav class="footer__nav" aria-label="Navigation du pied de page">
+        <a href="index.html">Accueil</a>
+        <a href="shop.html">Boutique</a>
+        <a href="cart.html">Panier</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>

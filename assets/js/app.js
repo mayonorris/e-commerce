@@ -194,6 +194,7 @@
   // Init
   document.addEventListener("DOMContentLoaded", () => {
     updateCartCountUI();
+    window.addEventListener("cart:updated", updateCartCountUI);
     bindAddToCartButtons();
     bindPromoClicks();
     bindFeaturedProductClicks();
