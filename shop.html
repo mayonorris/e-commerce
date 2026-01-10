@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Démo | Boutique</title>
+
+  <meta name="description" content="Catalogue produits (démo) pour pratiquer GA4 / GTM : view_item_list, select_item, add_to_cart, search, filter." />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+
+  <script defer src="assets/js/analytics.js"></script>
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/products.js"></script>
+</head>
+
+<body>
+
+  <!-- Barre info -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <p class="topbar__text">Catalogue (démo) — pratique GA4 / GTM</p>
+      <div class="topbar__links">
+        <a href="index.html" class="topbar__link" data-analytics="shop_back_home">Accueil</a>
+        <a href="#" class="topbar__link" data-analytics="topbar_help">Aide</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="brand" aria-label="Aller à l'accueil">
+        <span class="brand__logo">EC</span>
+        <span class="brand__name">Boutique Démo</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav__link" href="index.html">Accueil</a>
+        <a class="nav__link active" href="shop.html">Boutique</a>
+        <a class="nav__link" href="cart.html">Panier</a>
+      </nav>
+
+      <div class="header__actions">
+        <form class="search" action="shop.html" method="GET" role="search" id="shopSearchForm">
+          <label class="sr-only" for="q">Rechercher des produits</label>
+          <input
+            id="q"
+            name="q"
+            class="search__input"
+            type="search"
+            placeholder="Rechercher un produit…"
+            autocomplete="off"
+          />
+          <button class="search__btn" type="submit" data-analytics="search_submit">
+            Rechercher
+          </button>
+        </form>
+
+        <a class="btn btn--ghost" href="cart.html" aria-label="Ouvrir le panier" data-analytics="open_cart">
+          Panier <span class="badge" id="cartCount" aria-label="Articles dans le panier">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+
+      <!-- Head -->
+      <div class="section__head">
+        <h1 class="section__title">Boutique</h1>
+        <p class="section__subtitle">
+          Filtrez, triez et recherchez. Cette page est idéale pour pratiquer <code>view_item_list</code>, <code>select_item</code>, <code>search</code> et <code>add_to_cart</code>.
+        </p>
+      </div>
+
+      <!-- Controls -->
+      <section class="shop-controls" aria-label="Filtres et tri">
+        <div class="controls grid">
+          <div class="control">
+            <label class="control__label" for="categorySelect">Catégorie</label>
+            <select id="categorySelect" class="control__input" data-analytics="filter_category">
+              <option value="all">Toutes</option>
+              <!-- Injecté par JS -->
+            </select>
+          </div>
+
+          <div class="control">
+            <label class="control__label" for="sortSelect">Trier</label>
+            <select id="sortSelect" class="control__input" data-analytics="sort_products">
+              <option value="featured">Recommandés</option>
+              <option value="price_asc">Prix : croissant</option>
+              <option value="price_desc">Prix : décroissant</option>
+              <option value="rating_desc">Note : meilleure</option>
+              <option value="name_asc">Nom : A → Z</option>
+            </select>
+          </div>
+
+          <div class="control">
+            <label class="control__label" for="stockSelect">Disponibilité</label>
+            <select id="stockSelect" class="control__input" data-analytics="filter_stock">
+              <option value="all">Toutes</option>
+              <option value="in">En stock</option>
+              <option value="out">Rupture</option>
+            </select>
+          </div>
+
+          <div class="control">
+            <label class="control__label" for="priceMax">Prix max (FCFA)</label>
+            <input
+              id="priceMax"
+              class="control__input"
+              type="number"
+              inputmode="numeric"
+              placeholder="Ex: 15000"
+              min="0"
+              step="100"
+              data-analytics="filter_price_max"
+            />
+          </div>
+        </div>
+
+        <div class="controls__foot">
+          <button class="btn btn--secondary" id="applyFiltersBtn" type="button" data-analytics="apply_filters">
+            Appliquer
+          </button>
+          <button class="btn btn--ghost" id="resetFiltersBtn" type="button" data-analytics="reset_filters">
+            Réinitialiser
+          </button>
+
+          <p class="results" id="resultsInfo" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- Products grid -->
+      <section class="section" style="padding-top: 1.5rem;">
+        <div class="grid products__grid" id="productsGrid" aria-label="Liste de produits">
+          <!-- Injecté par JS -->
+        </div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <h2>Aucun produit trouvé</h2>
+          <p>Essayez de modifier la recherche, les filtres ou le tri.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__brand">Boutique Démo</p>
+      <p class="footer__text">
+        Projet pour <strong>Statistique & Web Analytics</strong> (GA4 / GTM).
+      </p>
+
+      <nav class="footer__nav" aria-label="Navigation du pied de page">
+        <a href="index.html">Accueil</a>
+        <a href="shop.html">Boutique</a>
+        <a href="cart.html">Panier</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
