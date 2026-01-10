@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Démo | Accueil</title>
+
+  <!-- SEO (minimal) -->
+  <meta name="description" content="Site e-commerce pédagogique pour pratiquer la Web Analytics (GA4 / GTM)." />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+
+  <!-- JS (defer) -->
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/analytics.js"></script>
+</head>
+
+<body>
+
+  <!-- Barre info -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <p class="topbar__text">Livraison gratuite dès 25 000 FCFA </p>
+      <div class="topbar__links">
+        <a href="#" class="topbar__link" data-analytics="topbar_help">Aide</a>
+        <a href="#" class="topbar__link" data-analytics="topbar_account">Mon compte</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- En-tête -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="brand" aria-label="Aller à l'accueil">
+        <span class="brand__logo">EC</span>
+        <span class="brand__name">Boutique Démo</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav__link active" href="index.html">Accueil</a>
+        <a class="nav__link" href="shop.html">Boutique</a>
+        <a class="nav__link" href="#selection">Sélection</a>
+        <a class="nav__link" href="#apropos">À propos</a>
+      </nav>
+
+      <div class="header__actions">
+        <form class="search" action="shop.html" method="GET" role="search">
+          <label class="sr-only" for="q">Rechercher des produits</label>
+          <input
+            id="q"
+            name="q"
+            class="search__input"
+            type="search"
+            placeholder="Rechercher …"
+            autocomplete="off"
+          />
+          <button class="search__btn" type="submit" data-analytics="search_submit">
+            Rechercher
+          </button>
+        </form>
+
+        <a class="btn btn--ghost" href="cart.html" aria-label="Ouvrir le panier" data-analytics="open_cart">
+          Panier <span class="badge" id="cartCount" aria-label="Articles dans le panier">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main>
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="pill">Boutique démo orientée analytics</p>
+
+          <h1 class="hero__title">
+            Apprenez la <span class="accent">Web Analytics</span> avec un parcours e-commerce complet
+          </h1>
+
+          <p class="hero__subtitle">
+            Site conçu pour le cours : vues produits, ajout au panier, checkout et achat simulé (GA4 / GTM).
+          </p>
+
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="shop.html" data-analytics="hero_shop_now">
+              Voir la boutique
+            </a>
+            <a class="btn btn--secondary" href="#selection" data-analytics="hero_view_featured">
+              Voir la sélection
+            </a>
+          </div>
+
+          <div class="hero__stats" aria-label="Points clés de la boutique démo">
+            <div class="stat">
+              <span class="stat__value">30+</span>
+              <span class="stat__label">Produits démo</span>
+            </div>
+            <div class="stat">
+              <span class="stat__value">GA4</span>
+              <span class="stat__label">Événements prêts</span>
+            </div>
+            <div class="stat">
+              <span class="stat__value">GTM</span>
+              <span class="stat__label">Compatible</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__media" aria-hidden="true">
+          <div class="hero-card">
+            <p class="hero-card__kicker">Promotion </p>
+            <h3 class="hero-card__title">Nouveautés</h3>
+            <p class="hero-card__text">Mesurez clics, scrolls et conversions.</p>
+            <div class="hero-card__fakeimg"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Promotions -->
+    <section class="section promos" aria-label="Promotions">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Promotions</h2>
+          <p class="section__subtitle">
+            Parfait pour pratiquer les événements GA4 comme <code>view_promotion</code> et <code>select_promotion</code>.
+          </p>
+        </div>
+
+        <div class="grid promos__grid">
+          <a class="promo-card" href="shop.html?promo=welcome10"
+             data-promo-id="WELCOME10"
+             data-promo-name="Bienvenue 10%"
+             data-analytics="promo_click">
+            <div class="promo-card__body">
+              <p class="promo-card__tag">WELCOME10</p>
+              <h3 class="promo-card__title">-10% sur votre première commande</h3>
+              <p class="promo-card__text">Code applicable au paiement (simulation).</p>
+            </div>
+            <span class="promo-card__cta">Découvrir</span>
+          </a>
+
+          <a class="promo-card" href="shop.html?promo=weekend"
+             data-promo-id="WEEKEND"
+             data-promo-name="Offres du week-end"
+             data-analytics="promo_click">
+            <div class="promo-card__body">
+              <p class="promo-card__tag">WEEKEND</p>
+              <h3 class="promo-card__title">Offres du week-end</h3>
+              <p class="promo-card__text">Idéal pour tester CTR et conversion.</p>
+            </div>
+            <span class="promo-card__cta">Voir</span>
+          </a>
+
+          <a class="promo-card" href="shop.html?promo=shipping"
+             data-promo-id="FREESHIP"
+             data-promo-name="Livraison gratuite"
+             data-analytics="promo_click">
+            <div class="promo-card__body">
+              <p class="promo-card__tag">FREESHIP</p>
+              <h3 class="promo-card__title">Livraison gratuite </h3>
+              <p class="promo-card__text">Mesurez l’impact sur le checkout.</p>
+            </div>
+            <span class="promo-card__cta">Explorer</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sélection (placeholders pour l’instant) -->
+    <section class="section featured" id="selection" aria-label="Sélection de produits">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Sélection du moment</h2>
+          <p class="section__subtitle">
+            Ces cartes sont temporaires. Prochaine étape : affichage dynamique depuis <code>data/products.json</code>.
+          </p>
+        </div>
+
+        <div class="grid products__grid">
+          <article class="product-card">
+            <a class="product-card__link" href="product.html?id=sku_001"
+               data-analytics="featured_product_click" data-item-id="sku_001">
+              <div class="product-card__img" aria-hidden="true"></div>
+              <div class="product-card__meta">
+                <p class="product-card__category">Accessoires</p>
+                <h3 class="product-card__title">Carnet intelligent </h3>
+              </div>
+            </a>
+            <div class="product-card__bottom">
+              <p class="product-card__price">12 000 FCFA</p>
+              <button class="btn btn--small" type="button"
+                      data-analytics="featured_add_to_cart" data-item-id="sku_001">
+                Ajouter au panier
+              </button>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <a class="product-card__link" href="product.html?id=sku_002"
+               data-analytics="featured_product_click" data-item-id="sku_002">
+              <div class="product-card__img" aria-hidden="true"></div>
+              <div class="product-card__meta">
+                <p class="product-card__category">Tech</p>
+                <h3 class="product-card__title">Écouteurs sans fil </h3>
+              </div>
+            </a>
+            <div class="product-card__bottom">
+              <p class="product-card__price">18 500 FCFA</p>
+              <button class="btn btn--small" type="button"
+                      data-analytics="featured_add_to_cart" data-item-id="sku_002">
+                Ajouter au panier
+              </button>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <a class="product-card__link" href="product.html?id=sku_003"
+               data-analytics="featured_product_click" data-item-id="sku_003">
+              <div class="product-card__img" aria-hidden="true"></div>
+              <div class="product-card__meta">
+                <p class="product-card__category">Maison</p>
+                <h3 class="product-card__title">Lampe minimaliste </h3>
+              </div>
+            </a>
+            <div class="product-card__bottom">
+              <p class="product-card__price">9 900 FCFA</p>
+              <button class="btn btn--small" type="button"
+                      data-analytics="featured_add_to_cart" data-item-id="sku_003">
+                Ajouter au panier
+              </button>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <a class="product-card__link" href="product.html?id=sku_004"
+               data-analytics="featured_product_click" data-item-id="sku_004">
+              <div class="product-card__img" aria-hidden="true"></div>
+              <div class="product-card__meta">
+                <p class="product-card__category">Bureau</p>
+                <h3 class="product-card__title">Organiseur de bureau </h3>
+              </div>
+            </a>
+            <div class="product-card__bottom">
+              <p class="product-card__price">6 500 FCFA</p>
+              <button class="btn btn--small" type="button"
+                      data-analytics="featured_add_to_cart" data-item-id="sku_004">
+                Ajouter au panier
+              </button>
+            </div>
+          </article>
+        </div>
+
+        <div class="section__foot">
+          <a class="btn btn--ghost" href="shop.html" data-analytics="featured_view_all">
+            Voir tous les produits →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- À propos -->
+    <section class="section about" id="apropos" aria-label="À propos du projet">
+      <div class="container about__inner">
+        <div class="about__content">
+          <h2 class="section__title">Conçu pour apprendre l’analytics</h2>
+          <p class="section__subtitle">
+            Cette boutique démo génère des données propres : vues produits, panier, checkout, et achat simulé.
+          </p>
+
+          <ul class="checklist">
+            <li>Événements e-commerce GA4 recommandés</li>
+            <li>Attributs <code>data-*</code> faciles à capter via GTM</li>
+            <li>Panier réaliste via LocalStorage</li>
+            <li>UX claire pour analyser la conversion</li>
+          </ul>
+
+          <a class="btn btn--secondary" href="shop.html" data-analytics="about_start_learning">
+            Commencer l’exploration
+          </a>
+        </div>
+
+        <div class="about__card" aria-hidden="true">
+          <div class="about__fakechart"></div>
+          <p class="about__note">Astuce : construisez un entonnoir dans GA4 après l’envoi des événements.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pied de page -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__brand">Boutique Démo</p>
+      <p class="footer__text">
+        Projet pour <strong>Statistique & Web Analytics</strong> (GA4 / GTM).
+      </p>
+
+      <nav class="footer__nav" aria-label="Navigation du pied de page">
+        <a href="index.html">Accueil</a>
+        <a href="shop.html">Boutique</a>
+        <a href="cart.html">Panier</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Alerte si JS désactivé -->
+  <noscript>
+    <div class="noscript">
+      Ce site fonctionne mieux avec JavaScript activé (nécessaire pour le panier et les événements analytics).
+    </div>
+  </noscript>
+
+</body>
+</html>
