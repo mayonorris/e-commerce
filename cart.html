@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Démo | Panier</title>
+
+  <meta name="description" content="Panier (démo) pour pratiquer GA4 : view_cart, remove_from_cart, begin_checkout." />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+
+  <script defer src="assets/js/analytics.js"></script>
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/cart.js"></script>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <p class="topbar__text">Panier (démo) — événements GA4 : <code>view_cart</code>, <code>remove_from_cart</code>, <code>begin_checkout</code></p>
+      <div class="topbar__links">
+        <a href="shop.html" class="topbar__link" data-analytics="cart_back_shop">Retour boutique</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="brand" aria-label="Aller à l'accueil">
+        <span class="brand__logo">EC</span>
+        <span class="brand__name">Boutique Démo</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav__link" href="index.html">Accueil</a>
+        <a class="nav__link" href="shop.html">Boutique</a>
+        <a class="nav__link active" href="cart.html">Panier</a>
+      </nav>
+
+      <div class="header__actions">
+        <a class="btn btn--ghost" href="cart.html" aria-label="Ouvrir le panier" data-analytics="open_cart">
+          Panier <span class="badge" id="cartCount" aria-label="Articles dans le panier">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+
+      <div class="section__head">
+        <h1 class="section__title">Votre panier</h1>
+        <p class="section__subtitle">
+          Modifiez les quantités, supprimez des articles, puis lancez le checkout.
+        </p>
+      </div>
+
+      <section class="cart">
+        <div class="cart__items">
+          <div class="cart__list" id="cartList" aria-label="Liste des articles">
+            <!-- Injecté par JS -->
+          </div>
+
+          <div class="empty-state" id="cartEmpty" hidden>
+            <h2>Votre panier est vide</h2>
+            <p>Ajoutez des produits depuis la boutique pour commencer.</p>
+            <a class="btn btn--primary" href="shop.html" data-analytics="cart_empty_go_shop">Aller à la boutique</a>
+          </div>
+        </div>
+
+        <aside class="cart__summary" aria-label="Résumé du panier">
+          <div class="summary-card">
+            <h2 class="summary-card__title">Résumé</h2>
+
+            <div class="summary-row">
+              <span>Sous-total</span>
+              <strong id="subtotal">0 FCFA</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Livraison (démo)</span>
+              <strong id="shipping">0 FCFA</strong>
+            </div>
+
+            <div class="summary-row summary-row--total">
+              <span>Total</span>
+              <strong id="total">0 FCFA</strong>
+            </div>
+
+            <div class="summary-actions">
+              <a class="btn btn--primary" href="checkout.html" id="checkoutBtn" data-analytics="begin_checkout">
+                Finaliser la commande
+              </a>
+              <a class="btn btn--ghost" href="shop.html" data-analytics="continue_shopping">
+                Continuer mes achats
+              </a>
+            </div>
+
+            <p class="muted" style="margin-top: 1rem;">
+              Astuce cours : calculez le taux “panier → checkout” et analysez les abandons.
+            </p>
+          </div>
+        </aside>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__brand">Boutique Démo</p>
+      <p class="footer__text">Projet pour <strong>Statistique & Web Analytics</strong> (GA4 / GTM).</p>
+
+      <nav class="footer__nav" aria-label="Navigation du pied de page">
+        <a href="index.html">Accueil</a>
+        <a href="shop.html">Boutique</a>
+        <a href="cart.html">Panier</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
