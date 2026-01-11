@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Démo | Checkout</title>
+
+  <meta name="description" content="Checkout simulé pour pratiquer GA4 : add_shipping_info, add_payment_info, purchase." />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+
+  <script defer src="assets/js/analytics.js"></script>
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/checkout.js"></script>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <p class="topbar__text">Checkout (simulation) — événements GA4 : <code>add_shipping_info</code>, <code>add_payment_info</code></p>
+      <div class="topbar__links">
+        <a href="cart.html" class="topbar__link" data-analytics="checkout_back_cart">Retour panier</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="brand" aria-label="Aller à l'accueil">
+        <span class="brand__logo">EC</span>
+        <span class="brand__name">Boutique Démo</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav__link" href="index.html">Accueil</a>
+        <a class="nav__link" href="shop.html">Boutique</a>
+        <a class="nav__link" href="cart.html">Panier</a>
+        <a class="nav__link active" href="checkout.html">Checkout</a>
+      </nav>
+
+      <div class="header__actions">
+        <a class="btn btn--ghost" href="cart.html" aria-label="Ouvrir le panier" data-analytics="open_cart">
+          Panier <span class="badge" id="cartCount" aria-label="Articles dans le panier">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+
+      <div class="section__head">
+        <h1 class="section__title">Finaliser la commande (simulation)</h1>
+        <p class="section__subtitle">
+          Remplissez les informations ci-dessous. Aucun paiement réel : tout est simulé pour produire des données analytics.
+        </p>
+      </div>
+
+      <section class="checkout">
+        <!-- Form -->
+        <div class="checkout__form">
+          <div class="form-card">
+            <h2 class="form-card__title">1) Informations de livraison</h2>
+
+            <form id="shippingForm">
+              <div class="form-grid">
+                <div class="control">
+                  <label class="control__label" for="fullName">Nom complet</label>
+                  <input class="control__input" id="fullName" name="fullName" type="text" placeholder="Ex: Jean Dupont" required />
+                </div>
+
+                <div class="control">
+                  <label class="control__label" for="phone">Téléphone</label>
+                  <input class="control__input" id="phone" name="phone" type="tel" placeholder="Ex: +228 90 00 00 00" required />
+                </div>
+
+                <div class="control" style="grid-column: 1 / -1;">
+                  <label class="control__label" for="address">Adresse</label>
+                  <input class="control__input" id="address" name="address" type="text" placeholder="Ex: Lomé, quartier..." required />
+                </div>
+
+                <div class="control">
+                  <label class="control__label" for="city">Ville</label>
+                  <input class="control__input" id="city" name="city" type="text" value="Lomé" required />
+                </div>
+
+                <div class="control">
+                  <label class="control__label" for="shippingMethod">Mode de livraison</label>
+                  <select class="control__input" id="shippingMethod" name="shippingMethod" required>
+                    <option value="standard">Standard (démo)</option>
+                    <option value="express">Express (démo)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn--secondary" type="submit" data-analytics="submit_shipping">
+                  Valider la livraison
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="form-card">
+            <h2 class="form-card__title">2) Paiement (simulation)</h2>
+
+            <form id="paymentForm">
+              <div class="form-grid">
+                <div class="control">
+                  <label class="control__label" for="paymentMethod">Méthode</label>
+                  <select class="control__input" id="paymentMethod" name="paymentMethod" required>
+                    <option value="mobile_money">Mobile Money (démo)</option>
+                    <option value="card">Carte (démo)</option>
+                    <option value="cash_on_delivery">Paiement à la livraison (démo)</option>
+                  </select>
+                </div>
+
+                <div class="control">
+                  <label class="control__label" for="coupon">Code promo (optionnel)</label>
+                  <input class="control__input" id="coupon" name="coupon" type="text" placeholder="Ex: WELCOME10" />
+                </div>
+
+                <div class="control" style="grid-column: 1 / -1;">
+                  <label class="control__label" for="note">Note (optionnel)</label>
+                  <input class="control__input" id="note" name="note" type="text" placeholder="Ex: Appeler avant d'arriver..." />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn--primary" type="submit" data-analytics="submit_payment">
+                  Confirmer (simulation)
+                </button>
+              </div>
+            </form>
+
+            <div class="product__alert" id="checkoutAlert" hidden></div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <aside class="checkout__summary" aria-label="Résumé checkout">
+          <div class="summary-card">
+            <h2 class="summary-card__title">Votre commande</h2>
+
+            <div id="checkoutItems" class="checkout-items"></div>
+
+            <div class="summary-row">
+              <span>Sous-total</span>
+              <strong id="subtotal">0 FCFA</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Livraison (démo)</span>
+              <strong id="shipping">0 FCFA</strong>
+            </div>
+
+            <div class="summary-row summary-row--total">
+              <span>Total</span>
+              <strong id="total">0 FCFA</strong>
+            </div>
+
+            <p class="muted" style="margin-top: 1rem;">
+              Astuce cours : mesurez <code>add_shipping_info</code> → <code>add_payment_info</code> → <code>purchase</code>.
+            </p>
+          </div>
+        </aside>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__brand">Boutique Démo</p>
+      <p class="footer__text">Projet pour <strong>Statistique & Web Analytics</strong> (GA4 / GTM).</p>
+
+      <nav class="footer__nav" aria-label="Navigation du pied de page">
+        <a href="index.html">Accueil</a>
+        <a href="shop.html">Boutique</a>
+        <a href="cart.html">Panier</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>

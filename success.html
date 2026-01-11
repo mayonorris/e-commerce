@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Démo | Commande confirmée</title>
+
+  <meta name="description" content="Page de confirmation : envoi de l'événement GA4 purchase (simulation)." />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+
+  <script defer src="assets/js/analytics.js"></script>
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/success.js"></script>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="brand" aria-label="Aller à l'accueil">
+        <span class="brand__logo">EC</span>
+        <span class="brand__name">Boutique Démo</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav__link" href="index.html">Accueil</a>
+        <a class="nav__link" href="shop.html">Boutique</a>
+      </nav>
+
+      <div class="header__actions">
+        <a class="btn btn--ghost" href="shop.html" data-analytics="success_back_shop">Retour boutique</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="success">
+        <p class="pill">Commande confirmée (simulation)</p>
+        <h1 class="success__title">Merci ! 🎉</h1>
+        <p class="success__subtitle">
+          Votre commande a été enregistrée (démo). L’événement <code>purchase</code> a été envoyé à GA4/GTM.
+        </p>
+
+        <div class="success__card" id="successCard">
+          <!-- Injecté par JS -->
+        </div>
+
+        <div class="success__actions">
+          <a class="btn btn--primary" href="shop.html" data-analytics="success_continue_shopping">Continuer les achats</a>
+          <a class="btn btn--secondary" href="index.html" data-analytics="success_back_home">Retour accueil</a>
+        </div>
+
+        <p class="muted" style="margin-top: 1rem;">
+          Astuce cours : analysez le taux de conversion et la valeur moyenne de commande.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__brand">Boutique Démo</p>
+      <p class="footer__text">Projet pour <strong>Statistique & Web Analytics</strong> (GA4 / GTM).</p>
+    </div>
+  </footer>
+
+</body>
+</html>
