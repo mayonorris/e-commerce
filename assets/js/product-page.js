@@ -1,19 +1,9 @@
-/* =========================================================
-   product-page.js — fiche produit
-   - Lit ?id=sku_...
-   - Charge data/products.json
-   - Affiche le produit
-   - Ajout au panier
-   - Événements GA4: view_item, add_to_cart
-========================================================= */
-
 (function () {
   "use strict";
 
   const PRODUCTS_URL = "data/products.json";
   const CART_KEY = "ec_cart_v1";
 
-  // DOM
   const titleEl = document.getElementById("productTitle");
   const categoryEl = document.getElementById("productCategory");
   const badgeEl = document.getElementById("productBadge");
@@ -26,7 +16,6 @@
 
   const qtyInput = document.getElementById("qtyInput");
   const addBtn = document.getElementById("addToCartBtn");
-
   const relatedGrid = document.getElementById("relatedGrid");
 
   function safeJSONParse(value, fallback) {
@@ -40,6 +29,7 @@
 
   function saveCart(cart) {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    window.dispatchEvent(new Event("cart:updated"));
   }
 
   function addToCart(item, quantity = 1) {
@@ -53,11 +43,11 @@
       item_category: item.item_category,
       price: Number(item.price) || 0,
       currency: item.currency || "XOF",
-      quantity
+      quantity,
+      image: item.image || ""
     });
 
     saveCart(cart);
-    window.dispatchEvent(new Event("cart:updated"));
   }
 
   function formatXOF(n) {
@@ -98,31 +88,45 @@
     };
   }
 
+  function shorten(str, max) {
+    if (!str) return "";
+    return str.length > max ? str.slice(0, max - 1) + "…" : str;
+  }
+
+  function escapeHtml(s) {
+    return (s || "").replace(/[&<>"']/g, (m) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+    }[m]));
+  }
+
+  function escapeAttr(s) {
+    return escapeHtml(s).replace(/`/g, "&#096;");
+  }
+
   function renderProduct(p) {
     titleEl.textContent = p.item_name || "Produit";
     breadcrumbCurrent.textContent = p.item_name || "Produit";
-
     categoryEl.textContent = p.item_category || "—";
 
-    if (p.badge) {
-      badgeEl.hidden = false;
-      badgeEl.textContent = p.badge;
-    } else {
-      badgeEl.hidden = true;
-    }
+    if (p.badge) { badgeEl.hidden = false; badgeEl.textContent = p.badge; }
+    else { badgeEl.hidden = true; }
 
     descEl.textContent = p.description || "";
-
     priceEl.textContent = formatXOF(p.price);
 
     const stockText = p.in_stock ? "En stock" : "Rupture";
     const ratingText = `⭐ ${Number(p.rating || 0).toFixed(1)} (${Number(p.reviews || 0)} avis)`;
     subEl.textContent = `${stockText} • ${ratingText}`;
 
-    // Image placeholder (on n’utilise pas encore de vraies images)
-    imgEl.style.backgroundImage = ""; // placeholder; can be replaced later
+    // ✅ Image réelle
+    imgEl.src = p.image || "";
+    imgEl.alt = p.item_name || "Produit";
+    imgEl.referrerPolicy = "no-referrer";
+    imgEl.onerror = () => {
+      imgEl.removeAttribute("src");
+      imgEl.classList.add("product__img--fallback");
+    };
 
-    // Bouton
     addBtn.disabled = !p.in_stock;
     addBtn.textContent = p.in_stock ? "Ajouter au panier" : "Indisponible";
   }
@@ -130,15 +134,9 @@
   function renderRelated(products, current) {
     if (!relatedGrid) return;
 
-    // Simple : mêmes catégories (jusqu’à 4)
     const related = products
       .filter((x) => x.item_id !== current.item_id && x.item_category === current.item_category)
       .slice(0, 4);
-
-    if (related.length === 0) {
-      relatedGrid.innerHTML = "";
-      return;
-    }
 
     relatedGrid.innerHTML = related.map((p) => `
       <article class="product-card product-card--shop">
@@ -146,7 +144,14 @@
            href="product.html?id=${encodeURIComponent(p.item_id)}"
            data-analytics="related_product_click"
            data-item-id="${escapeAttr(p.item_id)}">
-          <div class="product-card__img" aria-hidden="true"></div>
+
+          <img class="product-card__img"
+               src="${escapeAttr(p.image || "")}"
+               alt="${escapeAttr(p.item_name || "Produit")}"
+               loading="lazy"
+               referrerpolicy="no-referrer"
+               onerror="this.style.display='none'; this.closest('article').classList.add('img-fallback');" />
+
           <div class="product-card__meta">
             <div class="product-card__topline">
               <p class="product-card__category">${escapeHtml(p.item_category || "")}</p>
@@ -156,6 +161,7 @@
             <p class="product-card__desc">${escapeHtml(shorten(p.description || "", 85))}</p>
           </div>
         </a>
+
         <div class="product-card__bottom">
           <div class="product-card__pricewrap">
             <p class="product-card__price">${formatXOF(p.price)}</p>
@@ -172,21 +178,15 @@
       </article>
     `).join("");
 
-    // Analytics for related clicks
     relatedGrid.querySelectorAll('a[data-analytics="related_product_click"]').forEach((a) => {
       a.addEventListener("click", () => {
         const id = a.getAttribute("data-item-id");
         const p = products.find((x) => x.item_id === id);
         if (!p || typeof window.track !== "function") return;
-
-        window.track("select_item", {
-          item_list_name: "Produits similaires",
-          items: [toGAItem(p)]
-        });
+        window.track("select_item", { item_list_name: "Produits similaires", items: [toGAItem(p)] });
       });
     });
 
-    // Add from related
     relatedGrid.querySelectorAll('button[data-analytics="related_add_to_cart"]').forEach((btn) => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-item-id");
@@ -208,37 +208,15 @@
     });
   }
 
-  // Toast
   function toast(message) {
     const el = document.createElement("div");
     el.className = "toast";
     el.textContent = message;
-
     document.body.appendChild(el);
     requestAnimationFrame(() => el.classList.add("toast--show"));
-
-    setTimeout(() => {
-      el.classList.remove("toast--show");
-      setTimeout(() => el.remove(), 250);
-    }, 2000);
+    setTimeout(() => { el.classList.remove("toast--show"); setTimeout(() => el.remove(), 250); }, 2000);
   }
 
-  function shorten(str, max) {
-    if (!str) return "";
-    return str.length > max ? str.slice(0, max - 1) + "…" : str;
-  }
-
-  function escapeHtml(s) {
-    return (s || "").replace(/[&<>"']/g, (m) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
-    }[m]));
-  }
-
-  function escapeAttr(s) {
-    return escapeHtml(s).replace(/`/g, "&#096;");
-  }
-
-  // Boot
   document.addEventListener("DOMContentLoaded", async () => {
     hideAlert();
 
@@ -264,7 +242,6 @@
       renderProduct(product);
       renderRelated(products, product);
 
-      // GA4: view_item
       if (typeof window.track === "function") {
         window.track("view_item", {
           currency: product.currency || "XOF",
@@ -273,7 +250,6 @@
         });
       }
 
-      // Add to cart
       addBtn.addEventListener("click", () => {
         const qty = Math.max(1, Number(qtyInput?.value || 1));
         if (!product.in_stock) return;
