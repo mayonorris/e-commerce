@@ -1,17 +1,8 @@
-/* =========================================================
-   cart.js — page panier
-   - Rend le panier depuis localStorage
-   - Modifie quantités + suppression
-   - Calcule totaux
-   - GA4: view_cart, remove_from_cart, begin_checkout
-========================================================= */
-
 (function () {
   "use strict";
 
   const CART_KEY = "ec_cart_v1";
 
-  // DOM
   const listEl = document.getElementById("cartList");
   const emptyEl = document.getElementById("cartEmpty");
 
@@ -51,7 +42,6 @@
   }
 
   function shippingCost(subtotal) {
-    // Démo : livraison gratuite dès 25 000 FCFA, sinon 1500 FCFA
     if (subtotal === 0) return 0;
     return subtotal >= 25000 ? 0 : 1500;
   }
@@ -72,24 +62,18 @@
     if (!cart.length) {
       listEl.innerHTML = "";
       emptyEl.hidden = false;
-      checkoutBtn.classList.add("btn--disabled");
-      checkoutBtn.setAttribute("aria-disabled", "true");
-      checkoutBtn.addEventListener("click", blockCheckoutIfEmpty, { once: true });
 
       updateSummary(cart);
       return;
     }
 
     emptyEl.hidden = true;
-    checkoutBtn.classList.remove("btn--disabled");
-    checkoutBtn.removeAttribute("aria-disabled");
 
     listEl.innerHTML = cart.map(itemRowHTML).join("");
 
     bindRowEvents();
     updateSummary(cart);
 
-    // GA4: view_cart
     if (typeof window.track === "function") {
       window.track("view_cart", {
         currency: "XOF",
@@ -99,19 +83,14 @@
     }
   }
 
-  function blockCheckoutIfEmpty(e) {
-    e.preventDefault();
-    toast("Votre panier est vide.");
-  }
-
   function updateSummary(cart) {
-    const subtotal = cartSubtotal(cart);
-    const ship = shippingCost(subtotal);
-    const total = subtotal + ship;
+    const sub = cartSubtotal(cart);
+    const ship = shippingCost(sub);
+    const tot = sub + ship;
 
-    subtotalEl.textContent = formatXOF(subtotal);
+    subtotalEl.textContent = formatXOF(sub);
     shippingEl.textContent = formatXOF(ship);
-    totalEl.textContent = formatXOF(total);
+    totalEl.textContent = formatXOF(tot);
   }
 
   function itemRowHTML(it) {
@@ -121,7 +100,12 @@
 
     return `
       <div class="cart-item" data-item-id="${escapeAttr(it.item_id)}">
-        <div class="cart-item__img" aria-hidden="true"></div>
+        <img class="cart-item__img"
+             src="${escapeAttr(it.image || "")}"
+             alt="${escapeAttr(it.item_name || "Produit")}"
+             loading="lazy"
+             referrerpolicy="no-referrer"
+             onerror="this.style.display='none';" />
 
         <div class="cart-item__info">
           <p class="cart-item__category">${escapeHtml(it.item_category || "")}</p>
@@ -139,7 +123,6 @@
                 step="1"
                 value="${qty}"
                 inputmode="numeric"
-                data-analytics="cart_qty_change"
               />
             </div>
 
@@ -177,7 +160,7 @@
 
         saveCart(cart);
         toast("Quantité mise à jour ✅");
-        render(); // re-render totals & lines
+        render();
       });
 
       removeBtn?.addEventListener("click", () => {
@@ -190,7 +173,6 @@
 
         saveCart(newCart);
 
-        // GA4: remove_from_cart
         if (typeof window.track === "function") {
           window.track("remove_from_cart", {
             currency: removed.currency || "XOF",
@@ -210,7 +192,6 @@
       });
     });
 
-    // begin_checkout
     checkoutBtn?.addEventListener("click", (e) => {
       const cart = getCart();
       if (!cart.length) {
@@ -229,7 +210,6 @@
     });
   }
 
-  // Toast
   function toast(message) {
     const el = document.createElement("div");
     el.className = "toast";
@@ -254,9 +234,5 @@
     return escapeHtml(s).replace(/`/g, "&#096;");
   }
 
-  // Init
-  document.addEventListener("DOMContentLoaded", () => {
-    render();
-  });
-
+  document.addEventListener("DOMContentLoaded", () => render());
 })();
